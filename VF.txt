@@ -1,0 +1,41 @@
+<apex:page controller="myvf_cont">
+    <apex:form >
+    <apex:outputText value="controller count: {!mycont} ">
+    <apex:actionPoller action="{!icrementcount}" oncomplete="{!mycont}" interval="5"/>
+    </apex:outputText>
+    <apex:pageBlock >
+    
+        <apex:pageblockButtons location="bottom">
+            <apex:commandButton Value="Beginning" action="{!beginning}"/>
+            <apex:commandButton Value="Next" action="{!next}"/>
+            <apex:commandButton Value="Prev" action="{!prev}"/>
+            <apex:commandButton Value="Last" action="{!last}"/>
+        </apex:pageblockButtons>
+        <apex:pageblocktable value="{!acclist}" var="acl" rendered="{!showtable}">
+            <apex:column value="{!acl.name}">
+                <apex:facet name="header">
+                    Name
+                </apex:facet>
+            </apex:column>    
+            
+            <apex:column value="{!acl.AccountNumber}">
+                <apex:facet name="header">
+                    Account Number
+                </apex:facet>
+            </apex:column>   
+            
+            <apex:column value="{!acl.AccountSource}">
+                <apex:facet name="header">
+                    Account Source
+                </apex:facet>
+            </apex:column>   
+            
+            <apex:column value="{!acl.Industry}">
+                <apex:facet name="header">
+                    Industry
+                </apex:facet>
+            </apex:column> 
+            </apex:pageBlockTable>
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

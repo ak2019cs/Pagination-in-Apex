@@ -1,0 +1,77 @@
+public class myvf_cont {
+
+    private integer flag=1;
+    private integer count;
+    private integer setof =0;
+    public integer count_cont=0;
+    public Account x {get; set;}
+    public integer list_size=5;
+    public integer total_size;
+    public boolean showTable {get; set;}
+    public List<Account> accList {get; set;}
+    
+    public myvf_cont(){
+        Account x=new Account();
+        x=[SELECT NumberOfEmployees from Account where id='0016F00002PkTIsQAN'];
+        if(x.NumberOfEmployees!=null)
+        {count_cont=x.NumberOfEmployees;
+        count_cont++;
+        }
+        showTable = false;
+        accList = new List<Account>(); 
+        
+        total_size = [SELECT count() from ACCOUNT];
+        flag = total_size/list_size;    
+        setof = flag * list_size;   
+    }
+    public pagereference icrementcount(){
+        
+        
+        x=[Select NumberOfEmployees from Account where id='0016F00002PkTIsQAN'];
+        x.NumberOfEmployees=count_cont;
+        UPDATE x;
+        
+      
+        return null;
+    }
+    public integer getmycont(){
+        return count_cont;
+        }
+    
+    public void beginning(){
+        
+        count=0;
+        showTable = true;
+        accList = [SELECT name, AccountSource, accountNumber, Industry FROM Account ORDER BY Name LIMIT 5];
+    }
+    
+    public void next(){
+        
+        count = count + list_size;
+        showTable = true;
+        accList = [SELECT name, AccountSource, accountNumber, Industry FROM Account ORDER BY Name LIMIT 5 OFFSET :count];
+        
+    }
+    
+    public void prev(){
+        
+        showTable = true;
+        count = count - list_size;
+        if(flag!=0){
+        showTable = true;
+        accList = [SELECT name, AccountSource, accountNumber, Industry FROM Account ORDER BY Name LIMIT 5 OFFSET :count];
+        flag--;
+        }
+        else
+        accList = [SELECT name, AccountSource, accountNumber, Industry FROM Account ORDER BY Name LIMIT 5];
+        
+    }
+    
+    public void last(){
+        
+        count = total_size - math.mod(total_size,list_size);
+        showTable = true;
+        accList = [SELECT name, AccountSource, accountNumber, Industry FROM Account ORDER BY Name LIMIT 5 OFFSET :setof];
+    }    
+    
+}
